@@ -145,9 +145,17 @@
       "ts": "2026-07-02T00:10:00Z",
       "detail": "Finalized deletion of legacy provider skill dirs and root rule files; canonical files remain under .agents/. Commit pending."
     }
+    ,
+    {
+      "id": 21,
+      "name": "commit_consolidation",
+      "ready": true,
+      "ts": "2026-07-02T00:11:00Z",
+      "detail": "Committed canonical rules and staged removals. Commit: 6f1eacc11bd8a83e4758fcc5593cd366b49dfbda"
+    }
   ],
-  "last_updated": "2026-07-02T00:10:00Z",
+  "last_updated": "2026-07-02T00:11:00Z",
   "status": "completed",
-  "current_task": "cleanup_done"
+  "current_task": "cleanup_finished"
 }
 
