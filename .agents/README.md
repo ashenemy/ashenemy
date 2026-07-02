@@ -7,3 +7,8 @@ Guidelines:
 - Other skill locations (e.g. `.github/skills`, `.opencode/skills`, `.cursor/skills`) are pointers and may be overwritten.
 - When adding or updating a skill, update `.ai/project_map.md` and `.ai/cleanup_report.md` accordingly.
 
+- Agent runtime artifacts:
+  - Canonical rules: `.agents/rules/rules.md`
+  - Persistent job state: `.agents/state/.ai_job_state.json`
+  - References: `.agents/references/`
+
