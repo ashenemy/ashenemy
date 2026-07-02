@@ -137,7 +137,6 @@
       "detail": "Removed unneeded directories: .cursor, .opencode, .claude, .codex, .gemini, .github/skills (working tree deletions staged; no commit yet)"
     }
   ],
-    ,
     {
       "id": 20,
       "name": "finalize_deletions",
@@ -153,8 +152,16 @@
       "ts": "2026-07-02T00:11:00Z",
       "detail": "Committed canonical rules and staged removals. Commit: 6f1eacc11bd8a83e4758fcc5593cd366b49dfbda"
     }
+    ,
+    {
+      "id": 22,
+      "name": "remove_root_duplicates",
+      "ready": true,
+      "ts": "2026-07-02T00:12:00Z",
+      "detail": "Removed untracked root copies of .cursorrules, .clinerules, and .ai_job_state.json from working tree"
+    }
   ],
-  "last_updated": "2026-07-02T00:11:00Z",
+  "last_updated": "2026-07-02T00:12:00Z",
   "status": "completed",
   "current_task": "cleanup_finished"
 }
