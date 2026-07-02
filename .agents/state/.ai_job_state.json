@@ -160,8 +160,16 @@
       "ts": "2026-07-02T00:12:00Z",
       "detail": "Removed untracked root copies of .cursorrules, .clinerules, and .ai_job_state.json from working tree"
     }
+    ,
+    {
+      "id": 23,
+      "name": "remove_ai_dir",
+      "ready": true,
+      "ts": "2026-07-02T00:15:00Z",
+      "detail": "Removed legacy .ai directory from working tree (untracked); recorded in agent state"
+    }
   ],
-  "last_updated": "2026-07-02T00:12:00Z",
+  "last_updated": "2026-07-02T00:15:00Z",
   "status": "completed",
   "current_task": "cleanup_finished"
 }
