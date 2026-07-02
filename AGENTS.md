@@ -9,7 +9,7 @@ This document contains canonical rules and policies for automated agents operati
 - Always operate with the principle of least surprise: do not modify unrelated files without explicit user consent.
 - Prefer non-destructive actions: create commits with minimal changes and clear commit messages; avoid `git add -A` or committing unscoped changes.
 - Never expose secrets or private data. If a task requires credentials or secrets, prompt the user and abort automated actions until explicit approval is given.
-- When running commands that may change repository state, present the planned command(s) and obtain confirmation unless the user explicitly allowed automated changes.
+- Run autonomously for user-requested scope; do not ask for extra confirmations unless the request is ambiguous or potentially destructive beyond stated scope.
 
 ## 2. START SEEDED CONTEXT
 
@@ -19,15 +19,17 @@ Agents should begin with the following seeded context available in-memory for de
 - Current git branch and most recent commit SHA.
 - Presence of Nx Cloud indicators (`nx.json` `nxCloudId` or `nxCloudAccessToken`).
 - Known package manager by lockfile or `package.json.packageManager`.
-- Location of agent assets in the repository: `.agents/` (skills, scripts, references).
+- Location of agent assets in the repository: `.agents/` (skills, rules, state).
+- Current app/lib short descriptions from `.agents/PROJECT-CATALOG.md`.
 
 This context should be refreshed where appropriate before taking actions that depend on it.
 
 ## 3. State Persistence Protocol
 
-- Session state may be ephemeral in-memory; durable state must be stored under `.agents/state/` or a single `./.agents/state.json` file when persistence is required.
-- State files MUST be written only after successful user-approved actions and must include `lastUpdatedBy` and `timestamp` fields.
-- Do not store secrets or large binary blobs in persistent state. If state must reference external artifacts (logs, tool outputs), store paths or short summaries, not full contents.
+- Long action history is not required.
+- For crash recovery, use a temporary session checkpoint file: `.agents/state/session.tmp.json`.
+- Required checkpoint fields: `sessionId`, `current_subtask`, `pending_subtasks`, `last_updated`.
+- Keep checkpoint data minimal and temporary; do not store secrets.
 
 ## 4. Language Policy
 
@@ -43,7 +45,7 @@ This context should be refreshed where appropriate before taking actions that de
 
   `agent(<scope>): <short description>\n\n<one-line summary of files changed>\n\n<verification commands run>`
 
-- If automated fixes are applied (e.g., via scripts or tools), include the before/after summary in the `.agents/state.json` and in the commit message.
+- If automated fixes are applied (e.g., via scripts or tools), include a short before/after summary in commit message body.
 
 ## 6. Centralization under .agents/
 

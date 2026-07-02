@@ -3,12 +3,12 @@
 This directory `.agents/` is the canonical source of truth for agent skills and skill documentation.
 
 Guidelines:
-- Edit skill documentation only under `.agents/skills/`.
+- Canonical long-form skill documentation lives in `.agents/SKILLS.md`.
 - Other skill locations (e.g. `.github/skills`, `.opencode/skills`, `.cursor/skills`) are pointers and may be overwritten.
-- When adding or updating a skill, update `.ai/project_map.md` and `.ai/cleanup_report.md` accordingly.
+- Keep app/lib short descriptions updated in `.agents/PROJECT-CATALOG.md`.
 
 - Agent runtime artifacts:
-  - Canonical rules: `.agents/rules/rules.md`
-  - Persistent job state: `.agents/state/.ai_job_state.json`
-  - References: `.agents/references/`
+  - Canonical rules: `.agents/RULES.md`
+  - Session checkpoint (temp): `.agents/state/session.tmp.json`
+  - Project app/lib catalog: `.agents/PROJECT-CATALOG.md`
 
