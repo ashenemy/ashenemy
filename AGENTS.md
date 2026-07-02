@@ -1,23 +1,60 @@
-<!-- nx configuration start-->
-<!-- Leave the start & end comments to automatically receive updates. -->
+<!-- Agents canonical policy file -->
 
-# General Guidelines for working with Nx
+# Agents: Policies and Canonical Context
 
-- For navigating/exploring the workspace, invoke the `nx-workspace` skill first - it has patterns for querying projects, targets, and dependencies
-- When running tasks (for example build, lint, test, e2e, etc.), always prefer running the task through `nx` (i.e. `nx run`, `nx run-many`, `nx affected`) instead of using the underlying tooling directly
-- Prefix nx commands with the workspace's package manager (e.g., `pnpm nx build`, `npm exec nx test`) - avoids using globally installed CLI
-- You have access to the Nx MCP server and its tools, use them to help the user
-- For Nx plugin best practices, check `node_modules/@nx/<plugin>/PLUGIN.md`. Not all plugins have this file - proceed without it if unavailable.
-- NEVER guess CLI flags - always check nx_docs or `--help` first when unsure
+This document contains canonical rules and policies for automated agents operating in this repository. It is the primary seeded context that agents should consult before acting.
 
-## Scaffolding & Generators
+## 1. Rules & Policies
 
-- For scaffolding tasks (creating apps, libs, project structure, setup), ALWAYS invoke the `nx-generate` skill FIRST before exploring or calling MCP tools
+- Always operate with the principle of least surprise: do not modify unrelated files without explicit user consent.
+- Prefer non-destructive actions: create commits with minimal changes and clear commit messages; avoid `git add -A` or committing unscoped changes.
+- Never expose secrets or private data. If a task requires credentials or secrets, prompt the user and abort automated actions until explicit approval is given.
+- When running commands that may change repository state, present the planned command(s) and obtain confirmation unless the user explicitly allowed automated changes.
 
-## When to use nx_docs
+## 2. START SEEDED CONTEXT
 
-- USE for: advanced config options, unfamiliar flags, migration guides, plugin configuration, edge cases
-- DON'T USE for: basic generator syntax (`nx g @nx/react:app`), standard commands, things you already know
-- The `nx-generate` skill handles generator discovery internally - don't call nx_docs just to look up generator syntax
+Agents should begin with the following seeded context available in-memory for decision-making:
 
-<!-- nx configuration end-->
+- Workspace root path and a list of top-level projects (from `nx.json` or package manifests).
+- Current git branch and most recent commit SHA.
+- Presence of Nx Cloud indicators (`nx.json` `nxCloudId` or `nxCloudAccessToken`).
+- Known package manager by lockfile or `package.json.packageManager`.
+- Location of agent assets in the repository: `.agents/` (skills, scripts, references).
+
+This context should be refreshed where appropriate before taking actions that depend on it.
+
+## 3. State Persistence Protocol
+
+- Session state may be ephemeral in-memory; durable state must be stored under `.agents/state/` or a single `./.agents/state.json` file when persistence is required.
+- State files MUST be written only after successful user-approved actions and must include `lastUpdatedBy` and `timestamp` fields.
+- Do not store secrets or large binary blobs in persistent state. If state must reference external artifacts (logs, tool outputs), store paths or short summaries, not full contents.
+
+## 4. Language Policy
+
+- Human-facing messages (CLI output, PR descriptions, inline comments) must be in the user's preferred language. The user of this workspace prefers Russian for conversations and English for repository configuration files.
+  - Repository configuration files, docs, and generated skill/config files SHOULD be written in English.
+  - Chat interactions, prompts, and step-by-step explanations SHOULD be in Russian.
+
+## 5. Generation / Validation / Commit Policy
+
+- When generating code or configuration: produce minimal, focused changes and include a short rationale and verification commands.
+- Always run static validation where available (linters, typecheck, unit tests) before committing generated code. If running tests is expensive, run a targeted subset relevant to the change.
+- Commit messages must be explicit and scoped. Use the format:
+
+  `agent(<scope>): <short description>\n\n<one-line summary of files changed>\n\n<verification commands run>`
+
+- If automated fixes are applied (e.g., via scripts or tools), include the before/after summary in the `.agents/state.json` and in the commit message.
+
+## 6. Centralization under .agents/
+
+- All agent runtime assets (skills, deterministic scripts, reference docs, and shared helpers) SHOULD be located under the `.agents/` directory. Agents MUST prefer `.agents/` for reads and writes to avoid scattering files across the repository.
+
+## 7. Safety & Escalation
+
+- If an agent encounters ambiguity or a potentially destructive operation, it must escalate to the user and pause.
+- Provide clear remediation steps when an attempted automated fix fails. Include exact commands users can run to reproduce the attempted steps.
+
+---
+
+If multiple skill manifests exist in the repository, `.agents/` is the authoritative location. Consolidate existing skill files and references into `.agents/` and remove duplicates.
+
