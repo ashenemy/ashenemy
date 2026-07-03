@@ -4,19 +4,6 @@ root = true
 charset = utf-8
 end_of_line = lf
 indent_style = space
-indent_size = 2
+indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
-
-# TypeScript specific rules
-[*.ts]
-# Use 2 spaces indentation for TypeScript files
-indent_size = 2
-# Enforce file encoding and newline
-charset = utf-8
-end_of_line = lf
-
-# Naming conventions (informational - enforced by ESLint/TSLint rules)
-# - private class members MUST use a leading underscore: _privateMember
-# - static constants MUST be UPPER_CASE (e.g. MAX_RETRIES)
-# NOTE: These naming rules are informational in editorconfig; configure ESLint/TS rules to enforce them.
